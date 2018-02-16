@@ -8,6 +8,10 @@ import { HeaderComponent } from './header/header.component';
 import { MenuComponent } from './menu/menu.component';
 import { BodyComponent } from './body/body.component';
 import { FooterComponent } from './footer/footer.component';
+import { NewsComponent } from './menu/news/news.component';
+import { AcademicsComponent } from './menu/academics/academics.component';
+import { AdmissionsComponent } from './menu/admissions/admissions.component';
+import { CampuslifeComponent } from './menu/campuslife/campuslife.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +19,11 @@ import { FooterComponent } from './footer/footer.component';
     HeaderComponent,
     MenuComponent,
     BodyComponent,
-    FooterComponent
+    FooterComponent,
+    NewsComponent,
+    AcademicsComponent,
+    AdmissionsComponent,
+    CampuslifeComponent
   ],
   imports: [
     BrowserModule,
