@@ -1,8 +1,142 @@
-.news-heading{
-  text-align: center;
+.homepageContent{
+  margin-left: 20px;
+  margin-right: 10px;
   font-weight: bold;
 }
-.new-subheading{
-  text-align: center;
+.homepagecontentheading{
+  color: red;
+  margin-left: 20px;
+  font-weight: bold ;
+  text-decoration-line: underline;
+}
+.homepageheading2{
+  color: red;
+  margin-left: 20px;
+  font-weight: bold ;
+  text-decoration-line: underline;
+}
+.homepagecontent2{
+  margin-left: 20px;
+  margin-right: 10px;
   font-weight: bold;
+}
+.mainDiv{
+  overflow: auto;
+}
+.wrapper {
+  max-width: 1000px;
+  width: 90%;
+  margin: 0 auto;
+  overflow: auto;
+}
+
+.cdf{
+  font-weight: bold;
+  color: black;
+}
+
+.textOverImage{
+  color:#568203;
+  font-family:AR HERMANN;
+  width: 50%;
+  height:270px;
+  font-size:15px;
+  position:relative;
+  float:left;
+  margin:10px;
+  margin-left:70px;
+  background-size:20%;
+  background-position:center;
+  transition:0.5s;
+}
+
+.textOverImage:hover{
+  background-size:50%;
+  transition:0.5s;
+}
+
+.textOverImage:after{
+  position:absolute;
+  top:90%;
+  white-space:pre-wrap;
+  bottom:0;
+  left:0;
+  right:0;
+  overflow:hidden;
+  background-color:rgba(0,0,0,0.8);
+  color:#FEFEFF;
+  padding:8px 8px;
+  opacity:0;
+  content:attr(data-text);
+  transition:0.6s;
+  font-weight:bold;
+}
+
+.textOverImage:hover:after{
+  opacity:0.5;
+  top:0;
+  padding:8px;
+}
+
+h3 { padding:20px;
+  text-align:center; }
+
+
+
+ngx-carousel .ngxcarouselPointDefault {
+
+  position:
+    absolute;
+
+  bottom: 0;
+
+  left: 0;
+
+  right: 0;
+
+}
+
+ngx-carousel .ngxcarouselPoint li {
+
+  transform:
+    scale(1);
+
+}
+
+
+
+ngx-carousel button {
+
+  border: none;
+
+  position:
+    absolute;
+
+  bottom: 0;
+
+  top: 0;
+
+  width: 50px;
+
+  height: 50px;
+
+  border-radius:
+    999%;
+
+  margin: auto;
+
+}
+
+
+
+ngx-carousel button[NgxCarouselPrev] {
+
+  left: 50px;
+
+}
+
+ngx-carousel button[NgxCarouselNext] {
+
+  right: 50px;
+
 }

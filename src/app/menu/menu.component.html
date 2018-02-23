@@ -1,11 +1,11 @@
 <div class="mainmenu">
     <div class="collapse navbar-collapse">
       <ul class="navbar-menu">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">News</a></li>
-        <li><a href="#">Academics</a></li>
-        <li><a href="#">Admission</a></li>
-        <li><a href="#">Campus Life</a></li>
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a routerLink="/">Home</a></li>
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><a routerLink="/news">News</a></li>
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/academics">Academics</a></li>
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/admissions">Admission</a></li>
+        <li routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"><a routerLink="/campuslife">Campus Life</a></li>
       </ul>
     </div>
   </div>
