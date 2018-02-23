@@ -38,7 +38,7 @@
 .textOverImage{
   color:#568203;
   font-family:AR HERMANN;
-  width: 50%;
+  width: 80%;
   height:270px;
   font-size:15px;
   position:relative;
@@ -139,4 +139,8 @@ ngx-carousel button[NgxCarouselNext] {
 
   right: 50px;
 
+}
+
+.contaner{
+  background-color: black;
 }
