@@ -1,13 +1,11 @@
-<div class="contaner">
-  <div>
+<div class="row carouselclass">
       <ngx-carousel [inputs]="carouselConfig">
         <ngx-item *ngFor="let item of items" NgxCarouselItem>
-            <img style="max-height:200px;width: 100%" [src]="item.title" alt="not available" />
+            <img style="width: 100% ; height: 40% ;" [src]="item.title" alt="not available" />
         </ngx-item>
         <button NgxCarouselPrev class="leftRs">&lt;</button>
         <button NgxCarouselNext class="rightRs">&gt;</button>
       </ngx-carousel>
-    </div>
 </div>
   <div class="wrapper" id="scrollHere" name="scrollHere">
 
