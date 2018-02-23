@@ -141,9 +141,6 @@ ngx-carousel button[NgxCarouselNext] {
 
 }
 
-.contaner{
-  background-color: black;
-}
-.contaner{
+.carouselclass{
   margin-top: -20px;
 }
