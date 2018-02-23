@@ -33,13 +33,13 @@ const appRoutes: Routes = [
     AcademicsComponent,
     AdmissionsComponent,
     CampuslifeComponent,
-    NgxCarouselModule,
     HomeComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    NgxCarouselModule,
     RouterModule.forRoot(appRoutes),
   ],
   providers: [],

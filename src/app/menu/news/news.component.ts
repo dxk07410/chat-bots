@@ -8,13 +8,13 @@ import { NgxCarouselModule } from 'ngx-carousel';
 export class NewsComponent implements OnInit {
   public items: Object[] = [];
   public carouselConfig:
-    NgxCarouselModule;
+  NgxCarouselModule;
   constructor() {
     this.items = [
 
       {
 
-        title: '../../assets/images/slider/news1.jpg',
+        title: '../../../assets/images/slider/news1.png',
 
         color: 'green'
 
@@ -22,7 +22,7 @@ export class NewsComponent implements OnInit {
 
       {
 
-        title: '../../assets/images/slider/news4.jpg',
+        title: '../../../assets/images/slider/news2.jpg',
 
         color: 'blue'
 
@@ -33,24 +33,26 @@ export class NewsComponent implements OnInit {
 
     this.carouselConfig = {
 
-      grid: {xs:
-          1, sm:
-          1, md:
-          3, lg:
-          1, all:
-          0},
+      grid: {
+        xs:
+        1, sm:
+        1, md:
+        3, lg:
+        1, all:
+        0
+      },
 
       slide: 1,
 
       speed: 400,
 
       interval:
-        10000,
+      10000,
 
       point: {
 
         visible:
-          true
+        true
 
       },
 
