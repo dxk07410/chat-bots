@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3263043f-a619-4154-a7a3-b9789953420d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/app/menu/academics/academics.component.css" afterPath="$PROJECT_DIR$/src/app/menu/academics/academics.component.css" />
       <change beforePath="$PROJECT_DIR$/src/app/menu/academics/academics.component.html" afterPath="$PROJECT_DIR$/src/app/menu/academics/academics.component.html" />
-      <change beforePath="$PROJECT_DIR$/src/app/menu/academics/academics.component.ts" afterPath="$PROJECT_DIR$/src/app/menu/academics/academics.component.ts" />
-      <change beforePath="$PROJECT_DIR$/src/app/menu/news/news.component.ts" afterPath="$PROJECT_DIR$/src/app/menu/news/news.component.ts" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/dist/" />
@@ -43,11 +39,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="academics.component.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="academics.component.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/app/menu/academics/academics.component.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="110" column="8" lean-forward="true" selection-start-line="110" selection-start-column="8" selection-end-line="110" selection-end-column="8" />
+            <state relative-caret-position="398">
+              <caret line="117" column="4" lean-forward="false" selection-start-line="117" selection-start-column="4" selection-end-line="117" selection-end-column="4" />
               <folding>
                 <element signature="n#style#0;n#img#0;n#ngx-item#0;n#ngx-carousel#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="e#281#285#1" expanded="true" />
@@ -77,7 +73,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="news.component.ts" pinned="false" current-in-tab="true">
+      <file leaf-file-name="news.component.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app/menu/news/news.component.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="425">
@@ -115,9 +111,9 @@
         <option value="$PROJECT_DIR$/src/app/menu/news/news.component.css" />
         <option value="$PROJECT_DIR$/src/app/menu/news/news.component.html" />
         <option value="$PROJECT_DIR$/src/app/menu/academics/academics.component.ts" />
-        <option value="$PROJECT_DIR$/src/app/menu/academics/academics.component.html" />
         <option value="$PROJECT_DIR$/src/app/menu/academics/academics.component.css" />
         <option value="$PROJECT_DIR$/src/app/menu/news/news.component.ts" />
+        <option value="$PROJECT_DIR$/src/app/menu/academics/academics.component.html" />
       </list>
     </option>
   </component>
@@ -268,12 +264,12 @@
       <workItem from="1518765004898" duration="1868000" />
       <workItem from="1519255864957" duration="13069000" />
       <workItem from="1519338256601" duration="19670000" />
-      <workItem from="1519408109458" duration="7122000" />
+      <workItem from="1519408109458" duration="7453000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="80859000" />
+    <option name="totallyTimeSpent" value="81190000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -689,23 +685,21 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/app/menu/news/news.component.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="32" column="51" lean-forward="false" selection-start-line="32" selection-start-column="51" selection-end-line="32" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/app/menu/home/home.component.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
           <caret line="22" column="4" lean-forward="true" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="38" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/menu/academics/academics.component.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="110" column="8" lean-forward="true" selection-start-line="110" selection-start-column="8" selection-end-line="110" selection-end-column="8" />
-          <folding>
-            <element signature="n#style#0;n#img#0;n#ngx-item#0;n#ngx-carousel#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="e#281#285#1" expanded="true" />
-            <element signature="e#339#343#1" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -717,12 +711,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/app/menu/news/news.component.ts">
+    <entry file="file://$PROJECT_DIR$/src/app/menu/academics/academics.component.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="32" column="51" lean-forward="false" selection-start-line="32" selection-start-column="51" selection-end-line="32" selection-end-column="51" />
+        <state relative-caret-position="398">
+          <caret line="117" column="4" lean-forward="false" selection-start-line="117" selection-start-column="4" selection-end-line="117" selection-end-column="4" />
           <folding>
-            <element signature="e#0#50#0" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#ngx-item#0;n#ngx-carousel#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="e#281#285#1" expanded="true" />
+            <element signature="e#339#343#1" expanded="true" />
           </folding>
         </state>
       </provider>
