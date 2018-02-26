@@ -83,16 +83,9 @@ h3 { padding:20px;
 
 
 
-ngx-carousel .ngxcarouselPointDefault {
+  .carouselclass .ngxcarouselPointDefault {
 
-  position:
-    absolute;
-
-  bottom: 0;
-
-  left: 0;
-
-  right: 0;
+ display: none;
 
 }
 
@@ -144,4 +137,3 @@ ngx-carousel button[NgxCarouselNext] {
 .carouselclass{
   margin-top: -20px;
 }
-
