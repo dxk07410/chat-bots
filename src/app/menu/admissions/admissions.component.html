@@ -1,3 +1,119 @@
-<p>
-  admissions works!
-</p>
+<div class="row carouselclass">
+  <ngx-carousel [inputs]="carouselConfig">
+    <ngx-item *ngFor="let item of items" NgxCarouselItem>
+      <img style="width: 100% ; height: 40% ;" [src]="item.title" alt="not available" />
+    </ngx-item>
+    <button NgxCarouselPrev class="leftRs">&lt;</button>
+    <button NgxCarouselNext class="rightRs">&gt;</button>
+  </ngx-carousel>
+</div>
+<div class="wrapper" id="scrollHere" name="scrollHere">
+
+  <div class="homepagecontentheading">
+    <h2>Admission</h2>
+  </div>
+
+  <div class="homepageContent">
+    <p>UCM students come from across the U.S. and the world, representing diverse experiences, backgrounds and cultures.</p>
+  </div>
+
+  <div class ="homepageheading1">
+    <h4>Undergraduate Admissions</h4>
+  </div>
+
+  <div class="homepagecontent1">
+    <p>
+      Welcome to UCM! Whether you’re simply beginning your college search or are ready to Choose Red, you’re in the right
+      place. Our admissions guide and online viewbookincludes all the information you’ll need – important dates, advice
+      to prepare you for your college journey and of course, a look into life at UCM.
+      At UCM, your education will extend beyond the classroom. You’ll: </p>
+        <ul>
+          <li>Receive hands-on experiences through internships and state of the art technologies.</li>
+          <li>Impact the community through service-learning projects.</li>
+          <li>Have the opportunity to broaden your perspectives through study tours and semesters abroad.</li>
+          <li>Choose from one of 150 academic programs to gain the knowledge and skills you need to succeed in the future.</li>
+        </ul>
+  </div>
+
+  <div class="homepageheading2">
+    <p>
+      UCM at a Glance:
+    </p>
+  </div>
+  <div class="homepagecontent2 row">
+    <div class="col-xs-2">
+      513
+    </div>
+    <div class="col-xs-4">
+      Full-time Faculty
+    </div>
+  </div>
+
+  <div class="homepagecontent2 row">
+    <div class="col-xs-2">
+      14,395
+    </div>
+    <div class="col-xs-4">
+      UCM Students
+    </div>
+  </div>
+
+  <div class="homepagecontent2 row">
+    <div class="col-xs-2">
+      200
+    </div>
+    <div class="col-xs-4">
+      Student Organizations
+    </div>
+  </div>
+
+  <div class="homepagecontent2 row">
+    <div class="col-xs-2">
+      150
+    </div>
+    <div class="col-xs-4">
+      Programs of Study
+    </div>
+  </div>
+
+  <div class="homepagecontent2 row">
+    <div class="col-xs-2">
+      97%
+    </div>
+    <div class="col-xs-4">
+      First Destination Success Rate*
+    </div>
+  </div>
+
+  <div class="homepagecontent2 row">
+    <div class="col-xs-2">
+      92%
+    </div>
+    <div class="col-xs-4">
+      Students Receive Financial Aid
+    </div>
+  </div>
+
+  <div class="homepagecontent2 row">
+    <div class="col-xs-2">
+      $5 Million
+    </div>
+    <div class="col-xs-4">
+      Annual Merit-Based Scholarships
+    </div>
+  </div>
+
+  <div class="homepagecontent2 row">
+    <div class="col-xs-2">
+      19,000
+    </div>
+    <div class="col-xs-4">
+      Warrensburg Residents
+    </div>
+  </div>
+
+</div>
+
+
+
+
