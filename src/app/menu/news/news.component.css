@@ -83,9 +83,9 @@ h3 { padding:20px;
 
 
 
-  .carouselclass .ngxcarouselPointDefault {
+.ngxcarouselPointDefault{
 
- display: none;
+  display: none;
 
 }
 
@@ -95,8 +95,6 @@ ngx-carousel .ngxcarouselPoint li {
     scale(1);
 
 }
-
-
 
 ngx-carousel button {
 
