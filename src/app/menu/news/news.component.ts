@@ -14,7 +14,7 @@ export class NewsComponent implements OnInit {
 
       {
 
-        title: '../../../assets/images/slider/news1.png',
+        title: '../../../assets/images/slider/news4.jpg',
 
         color: 'green'
 
@@ -23,6 +23,14 @@ export class NewsComponent implements OnInit {
       {
 
         title: '../../../assets/images/slider/news2.jpg',
+
+        color: 'blue'
+
+      },
+
+      {
+
+        title: '../../../assets/images/slider/news3.jpg',
 
         color: 'blue'
 
@@ -47,7 +55,7 @@ export class NewsComponent implements OnInit {
       speed: 400,
 
       interval:
-      10000,
+      6000,
 
       point: {
 
