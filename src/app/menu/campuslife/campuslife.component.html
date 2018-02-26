@@ -1,3 +1,213 @@
-<p>
-  campuslife works!
-</p>
+<div class="row carouselclass">
+  <ngx-carousel [inputs]="carouselConfig">
+    <ngx-item *ngFor="let item of items" NgxCarouselItem>
+      <img style="width: 100% ; height: 40% ;" [src]="item.title" alt="not available" />
+    </ngx-item>
+    <button NgxCarouselPrev class="leftRs">&lt;</button>
+    <button NgxCarouselNext class="rightRs">&gt;</button>
+  </ngx-carousel>
+</div>
+<div class="wrapper" id="scrollHere" name="scrollHere">
+
+  <div class="homepagecontentheading">
+    <h2>Campus Life</h2>
+  </div>
+
+  <div class="homepageContent">
+    <p>There has never been a better time to discover how students who Choose Red benefit from an engaging on-campus experience.
+      Make the most of every moment on campus. Live Red.
+      Here are a few of the best ways to get involved at UCM:
+    </p>
+  </div>
+
+  <div class ="homepageheading1">
+    <h4>Live On Campus</h4>
+  </div>
+
+    <div class="homepagecontent2 row">
+      <div class="cdf" class="col-xs-5">
+        <img alt="Image not found"
+             width="100%"
+             height="40%"
+             src="../../assets/images/Campuslife/liveoncampus.jpg">
+      </div>
+      <div class="abc col-xs-7">
+        <p>Living on campus is a great choice and an integral part of the "complete" college experience.
+          With a broad spectrum of opportunities designed to complement your college experience, you will be part
+          of a community where you can grow and experience life independently, yet have support to help you excel on campus.
+          Plus, there is always something happening (visit our Housing facebook, Twitter, and Instagram for all the latest news
+          and events). In support of UCM's Learning to a Greater Degree, UCM requires first-year and sophomore students
+          under the age of 21 to reside on campus as part of a two year residency requirement. Freshmen and sophomores are
+          also required to have specified meal plans.Sign up for on-campus housing today! For more information, contact us at 660-543-4515 or housing@ucmo.edu.
+          <a href="https://issuu.com/ucentralmo/docs/housing_vwbk_print/8">View Details</a>
+        </p>
+      </div>
+    </div>
+
+  <p></p>
+
+  <div class ="homepageheading1">
+    <h4>The student Recreation and wellness Center</h4>
+  </div>
+
+  <div class="homepagecontent2 row">
+    <div class="cdf" class="col-xs-2">
+      <img alt="Image not found"
+           width="100%"
+           height="50%"
+           src="../../assets/images/Campuslife/gym1.jpg">
+    </div>
+    <div class="abc col-xs-4">
+      <ul>
+        <li>Tracks</li>
+        <li>Fields</li>
+        <li>Union Bowling Center</li>
+        <li>Basketball</li>
+      </ul>
+    </div>
+
+    <div class="cdf" class="col-xs-2">
+      <img alt="Image not found"
+           width="100%"
+           height="50%"
+           src="../../assets/images/Campuslife/gym2.jpg">
+    </div>
+    <div class="abc col-xs-4">
+      <ul>
+        <li>Fitness</li>
+        <li>Racquet Courts</li>
+        <li>Trap & Skeet Range</li>
+        <li>Gaming Center</li>
+      </ul>
+    </div>
+  </div>
+  <p></p>
+  <div class="homepagecontent2 row">
+    <div class="cdf" class="col-xs-2">
+      <img alt="Image not found"
+           width="100%"
+           height="50%"
+           src="../../assets/images/Campuslife/gym3.jpg">
+    </div>
+    <div class="abc col-xs-4">
+      <ul>
+        <li>Pool</li>
+        <li>Weight Rooms</li>
+        <li>Pertle Springs</li>
+        <li>Ping Pong</li>
+      </ul>
+    </div>
+
+    <div class="cdf" class="col-xs-2">
+      <img alt="Image not found"
+           width="100%"
+           height="50%"
+           src="../../assets/images/Campuslife/gym4.jpg">
+    </div>
+    <div class="abc col-xs-4">
+      <ul>
+        <li>Tennis Courts</li>
+        <li>Student Activities Office</li>
+        <li>Note Worthy Places</li>
+      </ul>
+    </div>
+  </div>
+
+  <p></p>
+  <div class="homepageheading1">
+    <h4>Elliot Union</h4>
+  </div>
+  <div class="homepagecontent2">
+    <p>Welcome to the Elliott Student Union - UCM's campus living room. It's all here for you, whether you are
+      looking to study, play or just catch up with friends. It's your time at UCM and Elliott Student Union is your place.
+      Check out our calendar of events to see what's happening today!</p>
+  </div>
+    <div class="homepagecontent2 row">
+      <div class="cdf" class="col-xs-7">
+     <img alt="Image not found"
+         width="100%"
+         height="70%"
+         src="../../assets/images/Campuslife/ElliotStudent.png">
+      </div>
+        <div class="col-xs-5">
+          <img alt="Image not found"
+               width="60%"
+               height="40%"
+               src="../../assets/images/Campuslife/unioncalender.jpg">
+        </div>
+    </div>
+  <p></p>
+
+  <div class="homepageheading1">
+    <h4>Union Bowling Center</h4>
+  </div>
+
+  <div class="homepagecontent2 row">
+       <div class="col-xs-5">
+         <img alt="Image not found"
+              width="100%"
+              height="100%"
+              src="../../assets/images/Campuslife/bowling.jpg">
+     </div>
+    <div class="col-xs-7">
+      <h4>Entertainment</h4>
+        We know how to get the good times rolling at the Union Bowling Center lanes!  Our bowling alley is open to the public seven days a week with free parking across the street.  Check out our specials to see when glo-bowl and other great deals are available.  With bowling and entertaining party packages, you are sure to have a great time at the UCM Union Bowling Center!
+      <p></p>
+    </div>
+
+    <div class="homepagecontent1">
+      <h4>Pro Shop</h4>
+      The Bowling Center has a full-service bowling pro shop that offers great options for buying your first bowling ball. Check out our Ball Drilling Services or ask about great bargains on used high-end bowling balls. You can also bring life back to your bowling ball with our Detox Machine.
+
+      <h4>Reservations</h4>
+      Lanes can be reserved by the hour by calling 660-543-4375 or by filling out this reservation form.  Lane reservations must be made 48 hours in advance and are subject to lane availability.
+
+      <h4>Bowling Leagues</h4>
+      League bowling is an exciting, challenging, and rewarding part of the bowling experience available at the Union Bowling Center.  Leagues are enjoyable for beginners, advanced, and even competitive bowlers. Call us to sign up and join in the fun.
+    </div>
+    </div>
+
+  <div class="homepageheading1">
+    <h4>Café Rouge</h4>
+  </div>
+
+  <div class="homepagecontent2 row">
+    <div class="col-xs-5">
+      <img alt="Image not found"
+           width="100%"
+           height="100%"
+           src="../../assets/images/Campuslife/cafe.png">
+    </div>
+    <div class="col-xs-7">
+      <img alt="Image not found"
+           width="40%"
+           height="30%"
+           src="../../assets/images/Campuslife/cafesymbol.jpg">
+    </div>
+  </div>
+  <div class="homepagecontent1">
+    <p>Welcome to Café Rouge, the new coffee house setting in the Union Atrium! Café Rouge serves Jazzman's Coffees,
+      which are Fair Trade Certified from sustainable sources. It features a fireplace with shelves and new furniture,
+      including couches and chairs, bistro-style tables and a laptop bar.</p>
+      <h4>Make a Reservation</h4>
+      <p>With seating for about 30 people, Café Rouge is a venue available for open mic nights, discussion groups and
+        other student events throughout the year. University groups wanting to use the space for public events can reserve
+        it through the office of Meeting and Conference Services.</p>
+     <h4> Jazzman's Hours</h4>
+    <p>Monday-Thursday 7:30 a.m. - 3 p.m.</p>
+    <p>Friday 7:30 a.m. - 2 p.m.</p>
+  </div>
+
+  <p></p>
+
+  <div class="homepageheading1">
+    <h4>UCM Virtual Tour</h4>
+  </div>
+
+  <div class="homepagecontent2">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/MOJRWYzevLg" frameborder="0" allow="autoplay;
+    encrypted-media" allowfullscreen></iframe>
+  </div>
+  </div>
+
+<p></p>

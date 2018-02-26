@@ -36,6 +36,13 @@ export class AdmissionsComponent implements OnInit {
 
           color: 'blue'
 
+        },
+        {
+
+          title: '../../../assets/images/Admission/admission2.jpg',
+
+          color: 'blue'
+
         }
 
       ]
