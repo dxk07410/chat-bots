@@ -14,6 +14,9 @@ import { AcademicsComponent } from './menu/academics/academics.component';
 import { AdmissionsComponent } from './menu/admissions/admissions.component';
 import { CampuslifeComponent } from './menu/campuslife/campuslife.component';
 import { HomeComponent } from './menu/home/home.component';
+import { ChatModule } from './chat/chat.module';
+import {ChatDialogComponent} from './menu/chat/chat-dialog/chat-dialog.component';
+
 
 const appRoutes: Routes = [
   {path : '', component : HomeComponent },
@@ -21,6 +24,7 @@ const appRoutes: Routes = [
   {path : 'academics', component : AcademicsComponent } ,
   {path : 'admissions', component : AdmissionsComponent } ,
   {path : 'campuslife', component : CampuslifeComponent } ,
+  {path : 'chat', component : ChatDialogComponent },
   ];
 @NgModule({
   declarations: [
@@ -41,6 +45,7 @@ const appRoutes: Routes = [
     HttpModule,
     NgxCarouselModule,
     RouterModule.forRoot(appRoutes),
+    ChatModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
