@@ -14,7 +14,7 @@ export class AcademicsComponent implements OnInit {
 
       {
 
-        title: '../../../assets/images/academics/academics1.jpg',
+        title: '../../../assets/images/Academics/academics1.jpg',
 
         color: 'green'
 
@@ -22,7 +22,7 @@ export class AcademicsComponent implements OnInit {
 
       {
 
-        title: '../../../assets/images/academics/academics2.jpg',
+        title: '../../../assets/images/Academics/academics2.jpg',
 
         color: 'blue'
 
@@ -30,7 +30,7 @@ export class AcademicsComponent implements OnInit {
 
       {
 
-        title: '../../../assets/images/academics/academics3.jpg',
+        title: '../../../assets/images/Academics/academics3.jpg',
 
         color: 'blue'
 
