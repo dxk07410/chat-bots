@@ -1,3 +1,4 @@
+<div class="wrapper" id="scrollHere" name="scrollHere">
 <h1>Angular Bot</h1>
 
 <ng-container *ngFor="let message of messages | async">
@@ -16,3 +17,5 @@
 <input [(ngModel)]="formValue" (keyup.enter)="sendMessage()" type="text">
 
 <button (click)="sendMessage()">Send</button>
+
+</div>
