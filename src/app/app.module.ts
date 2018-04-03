@@ -16,6 +16,11 @@ import { CampuslifeComponent } from './menu/campuslife/campuslife.component';
 import { HomeComponent } from './menu/home/home.component';
 import { ChatModule } from './chat/chat.module';
 import {ChatDialogComponent} from './menu/chat/chat-dialog/chat-dialog.component';
+//import { AngularFireModule } from 'angularfire2';
+
+// New imports to update based on AngularFire2 version 4
+/*import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';*/
 
 
 
@@ -27,6 +32,15 @@ const appRoutes: Routes = [
   {path : 'campuslife', component : CampuslifeComponent } ,
   {path : 'chat', component : ChatDialogComponent },
   ];
+
+export const firebaseConfig = {
+  apiKey: '',
+  authDomain: '',
+  databaseURL: '',
+  storageBucket: '',
+  messagingSenderId: ''
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,6 +60,9 @@ const appRoutes: Routes = [
     HttpModule,
     NgxCarouselModule,
     RouterModule.forRoot(appRoutes),
+    /*AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,*/
     ChatModule,
   ],
   providers: [],
