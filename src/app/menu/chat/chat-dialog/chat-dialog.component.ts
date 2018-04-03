@@ -17,6 +17,7 @@ export class ChatDialogComponent implements OnInit {
   constructor(public chat: ChatService) { }
 
   ngOnInit() {
+    console.log('chat init');
     // appends to array after each new message is added to feedSource
     this.messages = this.chat.conversation.asObservable()
       .scan((acc, val) => acc.concat(val) );

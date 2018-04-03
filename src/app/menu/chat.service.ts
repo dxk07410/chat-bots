@@ -23,6 +23,7 @@ export class ChatService {
 
   // Sends and receives messages via DialogFlow
   converse(msg: string) {
+    console.log('converse');
     const userMessage = new Message(msg, 'user');
     this.update(userMessage);
 

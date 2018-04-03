@@ -18,6 +18,7 @@ import { ChatModule } from './chat/chat.module';
 import {ChatDialogComponent} from './menu/chat/chat-dialog/chat-dialog.component';
 
 
+
 const appRoutes: Routes = [
   {path : '', component : HomeComponent },
   {path : 'news', component : NewsComponent } ,
