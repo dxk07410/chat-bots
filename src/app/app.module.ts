@@ -16,13 +16,14 @@ import { CampuslifeComponent } from './menu/campuslife/campuslife.component';
 import { HomeComponent } from './menu/home/home.component';
 import { ChatModule } from './chat/chat.module';
 import {ChatDialogComponent} from './menu/chat/chat-dialog/chat-dialog.component';
+//import {HttpClientModule} from '@angular/common/http';
 //import { AngularFireModule } from 'angularfire2';
 
 // New imports to update based on AngularFire2 version 4
 /*import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';*/
 
-
+import { ApiChatClinetService} from './menu/apichatclient';
 const appRoutes: Routes = [
   {path : '', component : HomeComponent },
   {path : 'news', component : NewsComponent } ,
@@ -63,8 +64,9 @@ export const firebaseConfig = {
     AngularFireDatabaseModule,
     AngularFireAuthModule,*/
     ChatModule,
+    
   ],
-  providers: [],
+  providers: [ApiChatClinetService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

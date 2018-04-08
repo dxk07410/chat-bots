@@ -6,7 +6,7 @@
 export const environment = {
   production: false,
   dialogflow: {
-    angularBot: 'c7fcd5967050479f927978b9e874df9f'
+    angularBot: '72656de492b84e9d8f67a30a644a8eba'
   }
 };
 
