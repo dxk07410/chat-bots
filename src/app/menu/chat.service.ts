@@ -16,6 +16,7 @@ import 'rxjs/add/observable/from'
 import 'rxjs/add/observable/throw'
 import 'rxjs/add/operator/catch'
 import 'rxjs/add/operator/map'
+import {forEach} from "@angular/router/src/utils/collection";
 
 
 // Message class for displaying messages in the component
@@ -47,7 +48,7 @@ export class ChatService {
     this.validateEmailIdCount = 0;
     this.emailSendCount = 0;
     this.emailAddressAlreadyExistCount = 0;
-    // this.noderestclient = new ApiChatClinetService(this.http);
+
   }
 
   // Sends and receives messages via DialogFlow
@@ -58,13 +59,20 @@ export class ChatService {
     if (userMessage.sentBy == 'user' && this.validateEmailIdCount == 1) {
       this.validateEmailIdCount = 0;
       this.emailAddress = userMessage.content;
-      this.verfiyEmailExisitOrNot(userMessage, this.emailAddress);
-      return ;
+
     }
 
     return this.client.textRequest(msg) //  textRequest is dialouge flow method
       .then(res => {
         const speech = res.result.fulfillment.speech;
+        var botMsg = speech.substr(0,24);
+        if(botMsg == "Thank you for your email" && this.validateEmailIdCount == 1){
+          this.validateEmailIdCount == 0 ;
+          this.verfiyEmailExisitOrNot(userMessage, this.emailAddress);
+          const botMessage = new Message(speech, 'bot');
+          this.addMessageToChatWindow(botMessage);
+          return ;
+        }
         const botMessage = new Message(speech, 'bot');
         this.addMessageToChatWindow(botMessage);
       });
@@ -136,7 +144,26 @@ export class ChatService {
     if(msg.sentBy == 'bot' && msg.content == 'This email id already exist. Do you want to see your previous chat history.'){
         this.emailAddressAlreadyExistCount = 1;
     }
+    if(msg.sentBy == 'user' && this.emailAddressAlreadyExistCount == 1 && msg.content.toUpperCase() == 'YES') {
+        this.emailAddressAlreadyExistCount = 0;
 
+      this.noderestclient.get('http://localhost:3000/chat/message/'+this.chatId)
+        .subscribe(
+          (res) => {
+            var messages = res;
+            for(var i = 0 ; i < messages.length ; i++){
+              var sender = 'bot';
+              if(res[i].sender != 'bot'){
+                sender = 'user'
+              }
+              const userMessage = new Message(res[i].message, sender);
+              this.conversation.next([userMessage]);
+            }
+            console.log(res);
+          },
+          (err) => console.log(err)
+        );
+    }
   }
 
   sendMessage(msg){
