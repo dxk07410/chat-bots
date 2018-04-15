@@ -28,4 +28,12 @@
   margin: 0 auto;
   overflow: auto;
 }
+.endBtnColor{
+  background-color: red
+}
 
+.date{
+  font-size: 10px;
+  font-weight: bold;
+  color: gray;
+}

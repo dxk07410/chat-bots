@@ -24,6 +24,7 @@ import {ChatDialogComponent} from './menu/chat/chat-dialog/chat-dialog.component
 import { AngularFireAuthModule } from 'angularfire2/auth';*/
 
 import { ApiChatClinetService} from './menu/apichatclient';
+import {SpeechRecognitionService} from './menu/chat/chat-dialog/speech-recognition.service ';
 const appRoutes: Routes = [
   {path : '', component : HomeComponent },
   {path : 'news', component : NewsComponent } ,
@@ -66,7 +67,7 @@ export const firebaseConfig = {
     ChatModule,
     
   ],
-  providers: [ApiChatClinetService],
+  providers: [ApiChatClinetService,SpeechRecognitionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

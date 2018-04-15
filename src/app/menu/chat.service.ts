@@ -21,7 +21,14 @@ import {forEach} from "@angular/router/src/utils/collection";
 
 // Message class for displaying messages in the component
 export class Message {
-  constructor(public content: string, public sentBy: string) {
+
+  
+  constructor(public content: string, public sentBy: string, public date:String) {
+    if(null == this.date || '' == this.date){
+      this.date = new Date().toLocaleDateString()+" "+ new Date().toLocaleTimeString();
+    }
+    
+    
   }
 }
 
@@ -31,7 +38,7 @@ export class ChatService {
   readonly token = environment.dialogflow.angularBot;
   readonly client = new ApiAiClient({accessToken: this.token});
 
-  conversation = new BehaviorSubject<Message[]>([]);
+  conversation ;
 
   public chatId;
   private nameCount: any;
@@ -40,6 +47,8 @@ export class ChatService {
   private username: string;
   private emailAddress: string;
   private emailAddressAlreadyExistCount :any ;
+  private botResponseAfterSuccessfulEmailId : string;
+  
 
   //private http: Http;
 
@@ -48,45 +57,71 @@ export class ChatService {
     this.validateEmailIdCount = 0;
     this.emailSendCount = 0;
     this.emailAddressAlreadyExistCount = 0;
+    this.conversation = new BehaviorSubject<Message[]>([]);
+    
 
   }
 
   // Sends and receives messages via DialogFlow
-  converse(msg: string) {
+  sendOrRecieveMessages(msg: string) {
     //console.log('converse');
-    const userMessage = new Message(msg, 'user');
-    this.addMessageToChatWindow(userMessage);
+    const userMessage = new Message(msg, 'user',"");
+    this.addMessageToChatWindow(userMessage);  // adds user response to chat window.
+    
+    //if user enter valid email , store it in a variable emailAddress
     if (userMessage.sentBy == 'user' && this.validateEmailIdCount == 1) {
-      this.validateEmailIdCount = 0;
-      this.emailAddress = userMessage.content;
+      //this.validateEmailIdCount = 0;
+      this.emailAddress = msg;
 
     }
 
+    //if email id already exit and user says yes , get chat history.
+    if(userMessage.sentBy == 'user' && this.emailAddressAlreadyExistCount == 1 && msg.toUpperCase() == 'YES'){
+        this.emailAddressAlreadyExistCount = 0;
+        this.getChatHistory();
+        return ;
+    }
+
+    //if email id already exit and user says no , do not fetch chat histroy.
+    if(userMessage.sentBy == 'user' && this.emailAddressAlreadyExistCount == 1 && msg.toUpperCase() == 'NO'){
+      this.emailAddressAlreadyExistCount = 0;
+      msg = this.emailAddress;
+    }
+
+    //call dialog flow method with user response  and recieve response from DF
+    // and call method addMessageToChatWindow to append response to chat widnow.
     return this.client.textRequest(msg) //  textRequest is dialouge flow method
       .then(res => {
         const speech = res.result.fulfillment.speech;
+
         var botMsg = speech.substr(0,24);
         if(botMsg == "Thank you for your email" && this.validateEmailIdCount == 1){
-          this.validateEmailIdCount == 0 ;
-          this.verfiyEmailExisitOrNot(userMessage, this.emailAddress);
-          const botMessage = new Message(speech, 'bot');
-          this.addMessageToChatWindow(botMessage);
+          this.validateEmailIdCount = 0 ;
+          this.verfiyEmailExisitOrNot(this.username, this.emailAddress);
+          //const botMessage = new Message(speech, 'bot');
+          //this.addMessageToChatWindow(botMessage);
+          this.botResponseAfterSuccessfulEmailId = "I can assist you with below options :select any one from below options :1)Admissions Eligibility " +
+                                                    " 2) Scholarships 3)Cost of Attending 4)Housing and dining information";
           return ;
         }
-        const botMessage = new Message(speech, 'bot');
+        const botMessage = new Message(speech, 'bot',"");
         this.addMessageToChatWindow(botMessage);
       });
   }
 
   verfiyEmailExisitOrNot(username, emailAddress) {
-
-    return this.noderestclient.get('http://localhost:3000/chat/' + this.username + '/' + this.emailAddress)
+       this.noderestclient.get('http://localhost:3000/chat?username='+ username + '&emailAddress=' +emailAddress)
       .subscribe(
         (resp) => {
           console.log(resp);
-          this.chatId = resp;
+          let result = JSON.stringify(resp)
+          let body = JSON.parse(result)._body; 
+          let parsedBody = JSON.parse(body)
+          if(parsedBody.length > 0 ){
+            this.chatId = parsedBody[0].chat_id || null;
+          }
           if (null != this.chatId) {
-            const userMessage = new Message("This email id already exist. Do you want to see your previous chat history.", 'bot');
+            const userMessage = new Message("This email id already exist. Do you want to see your previous chat history.", 'bot',"");
             return this.addMessageToChatWindow(userMessage);
           } else {
               return this.createchat(username,emailAddress);
@@ -97,16 +132,22 @@ export class ChatService {
   }
 
   createchat(username,emailAddress){
-    let params = {
+    var params = {
       username : username,
-      emailAddress : emailAddress
+      email : emailAddress
     }
     this.noderestclient.post('http://localhost:3000/chat/', params)
       .subscribe(
         (resp) => {
           console.log(resp);
-          this.chatId = resp;
-          return resp;
+          this.chatId = JSON.parse(JSON.stringify(resp))._body;
+           return this.client.textRequest(emailAddress) //  textRequest is dialouge flow method
+          .then(res => {
+            const speech = res.result.fulfillment.speech;
+            const botMessage = new Message(speech, 'bot',"");
+            this.addMessageToChatWindow(botMessage);
+          });
+    
         },
         (err) => console.log(err)
       );
@@ -116,13 +157,15 @@ export class ChatService {
   // Adds message to source
   addMessageToChatWindow(msg: Message) {
     //console.log('in update');
+    //this is responsible to dislay messages in chat window.
     this.conversation.next([msg]);
 
-    //let count = 0;
+    //when bot ask user to enter name
     if (msg.sentBy == 'bot' && msg.content == 'Hello , May i know your name please ?') {
       this.nameCount = 1;
       return;
     }
+    //when user enter name , store name in username variable.
     if (msg.sentBy == 'user' && this.nameCount == 1) {
       this.nameCount = 0;
       this.username = msg.content;
@@ -130,40 +173,44 @@ export class ChatService {
 
       //this.chatId = 12; // harcoded for now
     }
-
-    if (msg.sentBy == 'bot' && msg.content == 'Please, enter your email address.') {
+    // when bot ask user to enter email address
+    if (msg.sentBy == 'bot' && msg.content == 'Please enter your Email address') {
 
       this.validateEmailIdCount = 1;
 
     }
 
     if (null != this.chatId) {
-        this.sendMessage(msg);
+        this.sendMessage(msg); // insert messages into db
     }
 
     if(msg.sentBy == 'bot' && msg.content == 'This email id already exist. Do you want to see your previous chat history.'){
         this.emailAddressAlreadyExistCount = 1;
     }
-    if(msg.sentBy == 'user' && this.emailAddressAlreadyExistCount == 1 && msg.content.toUpperCase() == 'YES') {
-        this.emailAddressAlreadyExistCount = 0;
-
-      this.noderestclient.get('http://localhost:3000/chat/message/'+this.chatId)
+    
+  }
+  
+  getChatHistory(){
+    this.noderestclient.get('http://localhost:3000/chat/message/'+this.chatId)
         .subscribe(
           (res) => {
-            var messages = res;
-            for(var i = 0 ; i < messages.length ; i++){
+            var body = JSON.parse(JSON.stringify(res))._body;
+            var messages = JSON.parse(body);
+           for(var i = 0 ; i < messages.length ; i++){
               var sender = 'bot';
-              if(res[i].sender != 'bot'){
+              if(messages[i].sender_name != 'bot'){
                 sender = 'user'
               }
-              const userMessage = new Message(res[i].message, sender);
+            var date = new Date(messages[i].created_date).toLocaleDateString() + " " + new Date(messages[i].created_date).toLocaleTimeString();
+              const userMessage = new Message(messages[i].message, sender,date);
               this.conversation.next([userMessage]);
-            }
+            } 
             console.log(res);
+            const botMessage = new Message(this.botResponseAfterSuccessfulEmailId, 'bot',"");
+            this.addMessageToChatWindow(botMessage);
           },
           (err) => console.log(err)
         );
-    }
   }
 
   sendMessage(msg){
@@ -196,11 +243,11 @@ export class ChatService {
       this.emailSendCount = 1;
     }
 
-    if (this.emailSendCount == 1 && msg.sentBy == 'user' && msg.content == "YES") {
+    if (this.emailSendCount == 1 && msg.sentBy == 'user' && msg.content.toUpperCase() == "YES") {
       this.emailSendCount = 0;
       let params = {
-        chatId: chatId,
-        emailId: this.emailAddress
+        chatId: chatId
+        //emailId: this.emailAddress
       }
       console.log("Email send = " + JSON.stringify(params));
       this.noderestclient.post('http://localhost:3000/chat/sendmail', params)
