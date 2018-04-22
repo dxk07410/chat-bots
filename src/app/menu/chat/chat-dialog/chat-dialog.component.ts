@@ -48,21 +48,13 @@ export class ChatDialogComponent implements OnInit ,OnDestroy {
    
     this.messages = this.chat.conversation.asObservable()
     .scan((acc,val) => {
-      //console.log(val.length + " ,"+ acc.length)
-      if(val[0].sentBy == 'user'){
-        //console.log(Object.keys(val));
-        let text = encodeURIComponent(val[0].content);
-        let url =  "https://translate.google.com/translate_tts?ie=UTF-8&q" + text + "&tl=en"
-        console.log(document.getElementById('audioSpecch').attributes);
-        //document.getElementById('audioSpecch').attributes[3] = url;
-        //$('#audioSpecch').attr('src',url).get(0).play();
-    
-      }
-      
       return acc.concat(val)
     });
   }
   sendMessage() {
+    if(this.formValue==null || this.formValue== ''){
+      return;
+    }
     if( this.messages == null){
       this.initMessage();
     }
@@ -76,7 +68,7 @@ export class ChatDialogComponent implements OnInit ,OnDestroy {
     this.speechRecognitionService.record()
         .subscribe(
         //listener
-        (value) => {
+        (value) => {//get the text from voice.
             this.speechData = value;
             this.chat.sendOrRecieveMessages(value);
             //this.chat.conversation.next([new Message(value,'user',"")])

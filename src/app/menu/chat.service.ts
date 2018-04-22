@@ -48,7 +48,10 @@ export class ChatService {
   private emailAddress: string;
   private emailAddressAlreadyExistCount :any ;
   private botResponseAfterSuccessfulEmailId : string;
-  
+  private adminEmailMessages : string[];
+  private previousBotQuestion: string ;
+  private secondChanceForToEnterEmail:any = 0;
+  private allowedtoEnterForSecondTime:any  = 0;
 
   //private http: Http;
 
@@ -58,57 +61,102 @@ export class ChatService {
     this.emailSendCount = 0;
     this.emailAddressAlreadyExistCount = 0;
     this.conversation = new BehaviorSubject<Message[]>([]);
+    this.adminEmailMessages = [];
+    this.previousBotQuestion = "";
     
 
   }
 
-  // Sends and receives messages via DialogFlow
-  sendOrRecieveMessages(msg: string) {
-    //console.log('converse');
-    const userMessage = new Message(msg, 'user',"");
-    this.addMessageToChatWindow(userMessage);  // adds user response to chat window.
-    
-    //if user enter valid email , store it in a variable emailAddress
-    if (userMessage.sentBy == 'user' && this.validateEmailIdCount == 1) {
-      //this.validateEmailIdCount = 0;
-      this.emailAddress = msg;
+ // Sends and receives messages via DialogFlow
+ sendOrRecieveMessages(msg: string) {
+  //console.log('converse');
+  const userMessage = new Message(msg, 'user', "");
+  if (userMessage.sentBy == 'user' && this.validateEmailIdCount == 1) {
 
+    //replace at by @
+    if(msg.includes(" at ")){
+      msg = msg.replace(" at ","@");
     }
 
-    //if email id already exit and user says yes , get chat history.
-    if(userMessage.sentBy == 'user' && this.emailAddressAlreadyExistCount == 1 && msg.toUpperCase() == 'YES'){
-        this.emailAddressAlreadyExistCount = 0;
-        this.getChatHistory();
-        return ;
+    // replace at the rate by @
+    if(msg.includes(" at the rate ")){
+      msg = msg.replace(" at the rate ","@");
     }
 
-    //if email id already exit and user says no , do not fetch chat histroy.
-    if(userMessage.sentBy == 'user' && this.emailAddressAlreadyExistCount == 1 && msg.toUpperCase() == 'NO'){
-      this.emailAddressAlreadyExistCount = 0;
-      msg = this.emailAddress;
+    var concatEmail = "";
+    var msgArray = msg.split("");
+    for (var i = 0; i < msgArray.length; i++) {
+      if (msgArray[i] != " ") {
+        concatEmail = concatEmail + msg[i];
+      }
+    }
+    this.emailAddress = concatEmail;
+    const userMessage = new Message(this.emailAddress, 'user', "");
+    this.addMessageToChatWindow(userMessage);
+    msg = this.emailAddress;
+  }else{
+    this.addMessageToChatWindow(userMessage);
+  }
+   // adds user response to chat window.
+
+  //if user enter valid email , store it in a variable emailAddress
+  if (userMessage.sentBy == 'user' && this.validateEmailIdCount == 1&& this.secondChanceForToEnterEmail == 0) {
+    //this.validateEmailIdCount = 0;
+    //check for last 3 char as com only
+    //make array list of email exensions look for extentions.
+    var extractLastThreeCharFromEmail =  this.emailAddress.substr( this.emailAddress.length - 3,  this.emailAddress.length);
+    if (extractLastThreeCharFromEmail != 'com') {
+      const userMessage = new Message("Invalid Email Id, please enter again", 'bot', "");
+      this.addMessageToChatWindow(userMessage);  // adds user response to chat window.
+      return ;
+    }
+    if(this.allowedtoEnterForSecondTime == 0){
+      this.secondChanceForToEnterEmail  = 1;
+    }
+    //2nd chance for email
+    if(this.secondChanceForToEnterEmail  == 1){
+      this.secondChanceForToEnterEmail = 0;
+      this.allowedtoEnterForSecondTime = 1;
+      const userMessage = new Message("Please enter email id again for verification", 'bot', "");
+      this.addMessageToChatWindow(userMessage);
+      return;
     }
 
-    //call dialog flow method with user response  and recieve response from DF
-    // and call method addMessageToChatWindow to append response to chat widnow.
-    return this.client.textRequest(msg) //  textRequest is dialouge flow method
-      .then(res => {
-        const speech = res.result.fulfillment.speech;
-
-        var botMsg = speech.substr(0,24);
-        if(botMsg == "Thank you for your email" && this.validateEmailIdCount == 1){
-          this.validateEmailIdCount = 0 ;
-          this.verfiyEmailExisitOrNot(this.username, this.emailAddress);
-          //const botMessage = new Message(speech, 'bot');
-          //this.addMessageToChatWindow(botMessage);
-          this.botResponseAfterSuccessfulEmailId = "I can assist you with below options :select any one from below options :1)Admissions Eligibility " +
-                                                    " 2) Scholarships 3)Cost of Attending 4)Housing and dining information";
-          return ;
-        }
-        const botMessage = new Message(speech, 'bot',"");
-        this.addMessageToChatWindow(botMessage);
-      });
   }
 
+  //if email id already exit and user says yes , get chat history.
+  if (userMessage.sentBy == 'user' && this.emailAddressAlreadyExistCount == 1 && msg.toUpperCase() == 'YES') {
+    this.emailAddressAlreadyExistCount = 0;
+    this.getChatHistory();
+    return;
+  }
+
+  //if email id already exit and user says no , do not fetch chat histroy.
+  if (userMessage.sentBy == 'user' && this.emailAddressAlreadyExistCount == 1 && msg.toUpperCase() == 'NO') {
+    this.emailAddressAlreadyExistCount = 0;
+    msg = this.emailAddress;
+  }
+
+  //call dialog flow method with user response  and recieve response from DF
+  // and call method addMessageToChatWindow to append response to chat widnow.
+  return this.client.textRequest(msg) //  textRequest is dialouge flow method
+    .then(res => {
+      const speech = res.result.fulfillment.speech;
+
+      var botMsg = speech.substr(0, 24);
+      if (botMsg == "Thank you for your email" && this.validateEmailIdCount == 1) {
+        this.validateEmailIdCount = 0;
+        this.verfiyEmailExisitOrNot(this.username, this.emailAddress);
+        //const botMessage = new Message(speech, 'bot');
+        //this.addMessageToChatWindow(botMessage);
+        this.botResponseAfterSuccessfulEmailId = "I can assist you with below options :select any one from below options :1)Admissions Eligibility " +
+          " 2) Scholarships 3)Cost of Attending 4)Housing and dining information";
+        return;
+      }
+      const botMessage = new Message(speech, 'bot', "");
+      this.addMessageToChatWindow(botMessage);
+    });
+}
   verfiyEmailExisitOrNot(username, emailAddress) {
        this.noderestclient.get('http://localhost:3000/chat?username='+ username + '&emailAddress=' +emailAddress)
       .subscribe(
@@ -234,19 +282,54 @@ export class ChatService {
         (err) => console.log(err)
       );
     this.verfiyAndSendMail(msg, this.chatId, this.emailSendCount);
+   
+    
   }
+/*
+  sendEmailTOAdmin(adminEmailMessages){
+    let params= {
+      messages : adminEmailMessages
+    }
+    this.noderestclient.post('http://localhost:3000/chat/sendmail/admin', params)
+    .subscribe(
+      (res) => {
+        console.log(res);
+      },
+      (err) => console.log(err)
+    );
 
+  }
+*/
   verfiyAndSendMail(msg, chatId, emailSendCount) {
 
     if (msg.sentBy == 'bot' && msg.content == 'Do you want to send this conversation on your email ? => YES/NO') {
 
       this.emailSendCount = 1;
+      let params = {
+        chatId: chatId,
+        sendMailToAdmin:true
+        //emailId: this.emailAddress
+      }
+      //send mail to admin
+      if(this.adminEmailMessages.length > 0){
+         // this.sendEmailTOAdmin(this.adminEmailMessages);
+         this.noderestclient.post('http://localhost:3000/chat/sendmail', params)
+         .subscribe(
+           (res) => {
+             console.log(res);
+           },
+           (err) => console.log(err)
+         );
+      }
+      
     }
-
-    if (this.emailSendCount == 1 && msg.sentBy == 'user' && msg.content.toUpperCase() == "YES") {
+   
+    //send mail to user when user says yes
+    if (this.emailSendCount == 1 && msg.sentBy == 'user' && msg.content.trim().toUpperCase() == "YES") {
       this.emailSendCount = 0;
       let params = {
-        chatId: chatId
+        chatId: chatId,
+        sendMailToAdmin:false
         //emailId: this.emailAddress
       }
       console.log("Email send = " + JSON.stringify(params));
