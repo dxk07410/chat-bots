@@ -17,6 +17,7 @@ import 'rxjs/add/observable/throw'
 import 'rxjs/add/operator/catch'
 import 'rxjs/add/operator/map'
 import {forEach} from "@angular/router/src/utils/collection";
+import * as EmailValidator from 'email-validator';
 
 
 // Message class for displaying messages in the component
@@ -52,7 +53,15 @@ export class ChatService {
   private previousBotQuestion: string ;
   private secondChanceForToEnterEmail:any = 0;
   private allowedtoEnterForSecondTime:any  = 0;
-
+  private emailIdList: string[];
+  private emailAddressExistInList: any = 0;
+  private askUserToEnterEmailIdFromList: any = 0;
+  private newEmailId: string ;
+  private updateEmailIdCount: any = 0;
+  private firstEmailId: string ;
+  private registerdEmailIdCount: any = 0;
+  private isThisFirstTimeChating: any = 0;
+  private firstTimechating : boolean = true;
   //private http: Http;
 
   constructor(private noderestclient: ApiChatClinetService) {
@@ -63,15 +72,14 @@ export class ChatService {
     this.conversation = new BehaviorSubject<Message[]>([]);
     this.adminEmailMessages = [];
     this.previousBotQuestion = "";
-    
-
+  
   }
 
  // Sends and receives messages via DialogFlow
  sendOrRecieveMessages(msg: string) {
   //console.log('converse');
   const userMessage = new Message(msg, 'user', "");
-  if (userMessage.sentBy == 'user' && this.validateEmailIdCount == 1) {
+  if (userMessage.sentBy == 'user' && (this.validateEmailIdCount == 1) || this.askUserToEnterEmailIdFromList == 1) {
 
     //replace at by @
     if(msg.includes(" at ")){
@@ -90,28 +98,31 @@ export class ChatService {
         concatEmail = concatEmail + msg[i];
       }
     }
-    this.emailAddress = concatEmail;
-    const userMessage = new Message(this.emailAddress, 'user', "");
+    //this.emailAddress = concatEmail;
+    const userMessage = new Message(concatEmail, 'user', "");
     this.addMessageToChatWindow(userMessage);
-    msg = this.emailAddress;
+    msg = concatEmail;
   }else{
     this.addMessageToChatWindow(userMessage);
   }
    // adds user response to chat window.
 
   //if user enter valid email , store it in a variable emailAddress
-  if (userMessage.sentBy == 'user' && this.validateEmailIdCount == 1&& this.secondChanceForToEnterEmail == 0) {
+  if (userMessage.sentBy == 'user' && this.validateEmailIdCount == 1 && this.secondChanceForToEnterEmail == 0) {
     //this.validateEmailIdCount = 0;
     //check for last 3 char as com only
     //make array list of email exensions look for extentions.
-    var extractLastThreeCharFromEmail =  this.emailAddress.substr( this.emailAddress.length - 3,  this.emailAddress.length);
-    if (extractLastThreeCharFromEmail != 'com') {
+   // var extractLastThreeCharFromEmail =  this.emailAddress.substr( this.emailAddress.length - 3,  this.emailAddress.length);
+    
+
+    if (!EmailValidator.validate(msg)) {
       const userMessage = new Message("Invalid Email Id, please enter again", 'bot', "");
       this.addMessageToChatWindow(userMessage);  // adds user response to chat window.
       return ;
     }
     if(this.allowedtoEnterForSecondTime == 0){
       this.secondChanceForToEnterEmail  = 1;
+      this.firstEmailId = msg;
     }
     //2nd chance for email
     if(this.secondChanceForToEnterEmail  == 1){
@@ -121,11 +132,100 @@ export class ChatService {
       this.addMessageToChatWindow(userMessage);
       return;
     }
+    this.emailAddress = msg;
+  }
 
+  if(null != this.firstEmailId && ''!= this.firstEmailId && this.firstEmailId != msg){
+     this.allowedtoEnterForSecondTime = 0;
+    // this.secondChanceForToEnterEmail  = 1;
+     const userMessage = new Message("Email id you entered does not match.Please enter your email id again", 'bot', "");
+     this.addMessageToChatWindow(userMessage);
+     return ;
+   }else{
+    this.firstEmailId = null;
+   }
+
+  if(this.emailAddressExistInList == 1 && userMessage.sentBy == 'user' && msg.toUpperCase() == 'YES'){
+      this.emailAddressExistInList = 0;
+      const userMessage = new Message("Please enter email id from list.", 'bot', "");
+      this.addMessageToChatWindow(userMessage);
+      return;
+  }else if(this.emailAddressExistInList == 1 && userMessage.sentBy == 'user' && msg.toUpperCase() == 'NO'){
+    this.emailAddressExistInList = 0;
+    this.updateEmailIdCount = 0;
+    const userMessage = new Message( "Do you want to register new entered email id?" , 'bot', "");
+    this.addMessageToChatWindow(userMessage);
+    return ;
+  }else if(this.emailAddressExistInList == 1 && userMessage.sentBy == 'user' && (msg.toUpperCase() != 'YES' || msg.toUpperCase() != 'NO')){
+    const userMessage = new Message("Please enter either YES/NO.", 'bot', "");
+    this.addMessageToChatWindow(userMessage);
+    return ;
+  }
+  var emailCountExit = 0;
+  if(this.askUserToEnterEmailIdFromList == 1 && userMessage.sentBy == 'user' ){
+    for(var i = 0 ; i < this.emailIdList.length ; i++){
+      if(msg == this.emailIdList[i]){
+        emailCountExit++;
+      }
+    }
+    if(emailCountExit <= 0){
+      emailCountExit = 0;
+      const userMessage = new Message("Please enter valid email id from above list", 'bot', "");
+      this.addMessageToChatWindow(userMessage);
+      return ;
+    }
+
+    this.askUserToEnterEmailIdFromList = 0;
+    this.newEmailId = msg ;
+    const userMessage = new Message("Do you want to update "+this.newEmailId+ " by new emailid "+this.emailAddress, 'bot', "");
+    this.addMessageToChatWindow(userMessage);
+    return ;
+  }
+
+  if(this.updateEmailIdCount == 1 && userMessage.sentBy == 'user' && msg.toUpperCase() =='YES'){
+      this.updateEmailIdCount = 0;
+      this.updateEmailId(this.newEmailId,this.emailAddress);
+      this.botResponseAfterSuccessfulEmailId = "We have updated your email id. I can assist you with below options :select any one from below options :1)Admissions Eligibility " +
+      " 2) Scholarships 3)Cost of Attending 4)Housing and dining information";
+      const userMessage = new Message( this.botResponseAfterSuccessfulEmailId , 'bot', "");
+      this.addMessageToChatWindow(userMessage);
+      return ;
+  }else if(this.updateEmailIdCount == 1 && userMessage.sentBy == 'user' && msg.toUpperCase() =='NO'){
+    this.updateEmailIdCount = 0;
+    this.botResponseAfterSuccessfulEmailId = "I can assist you with below options :select any one from below options :1)Admissions Eligibility " +
+    " 2) Scholarships 3)Cost of Attending 4)Housing and dining information";
+    const userMessage = new Message( this.botResponseAfterSuccessfulEmailId , 'bot', "");
+    this.addMessageToChatWindow(userMessage);
+    return ;
+  }else if(this.updateEmailIdCount == 1 && userMessage.sentBy == 'user' && (msg.toUpperCase() != 'YES' || msg.toUpperCase() != 'NO')){
+    const userMessage = new Message("Please enter either YES/NO.", 'bot', "");
+    this.addMessageToChatWindow(userMessage);
+    return ;
+  }
+
+  if(this.registerdEmailIdCount == 1 && userMessage.sentBy == 'user' && msg.toUpperCase() == 'YES' ){
+    this.registerdEmailIdCount = 0; 
+    this.createchat_noCondition(this.username, this.emailAddress);
+      this.botResponseAfterSuccessfulEmailId = "Thank you for registration. I can assist you with below options :select any one from below options :1)Admissions Eligibility " +
+      " 2) Scholarships 3)Cost of Attending 4)Housing and dining information";
+      const userMessage = new Message( this.botResponseAfterSuccessfulEmailId , 'bot', "");
+      this.addMessageToChatWindow(userMessage);
+      return ;
+  }else if(this.registerdEmailIdCount == 1 && userMessage.sentBy == 'user' && msg.toUpperCase() == 'NO'){
+    this.registerdEmailIdCount = 0;
+    this.botResponseAfterSuccessfulEmailId = "We are unable to process your request at the moment. Please contact admin at deek.khadsare@gmail.com for further queries. Thank you for chating with me.";
+    const userMessage = new Message( this.botResponseAfterSuccessfulEmailId , 'bot', "");
+    this.addMessageToChatWindow(userMessage);
+    return ;
+  }else if(this.registerdEmailIdCount == 1 && userMessage.sentBy == 'user' && (msg.toUpperCase() != 'YES' || msg.toUpperCase() != 'NO')){
+     // this.registerdEmailIdCount = 0;
+      const userMessage = new Message("Please enter either YES/NO.", 'bot', "");
+      this.addMessageToChatWindow(userMessage);
+      return ;
   }
 
   //if email id already exit and user says yes , get chat history.
-  if (userMessage.sentBy == 'user' && this.emailAddressAlreadyExistCount == 1 && msg.toUpperCase() == 'YES') {
+  if(userMessage.sentBy == 'user' && this.emailAddressAlreadyExistCount == 1 && msg.toUpperCase() == 'YES') {
     this.emailAddressAlreadyExistCount = 0;
     this.getChatHistory();
     return;
@@ -137,12 +237,16 @@ export class ChatService {
     msg = this.emailAddress;
   }
 
+  if(this.isThisFirstTimeChating == 1 && userMessage.sentBy == 'user' && msg.toUpperCase() == 'NO'){
+     this.firstTimechating = false;
+  }
+
   //call dialog flow method with user response  and recieve response from DF
   // and call method addMessageToChatWindow to append response to chat widnow.
   return this.client.textRequest(msg) //  textRequest is dialouge flow method
     .then(res => {
       const speech = res.result.fulfillment.speech;
-
+      console.log(speech);
       var botMsg = speech.substr(0, 24);
       if (botMsg == "Thank you for your email" && this.validateEmailIdCount == 1) {
         this.validateEmailIdCount = 0;
@@ -156,6 +260,28 @@ export class ChatService {
       const botMessage = new Message(speech, 'bot', "");
       this.addMessageToChatWindow(botMessage);
     });
+}
+
+updateEmailId(previousEmailId,newEmailId){
+  var params = {
+    preemailid : previousEmailId,
+    newemailid : newEmailId
+  }
+  this.noderestclient.post('http://localhost:3000/chat/updateemail', params)
+    .subscribe(
+      (resp) => {
+        console.log(resp);
+        this.chatId = JSON.parse(JSON.stringify(resp))._body;
+        // return this.client.textRequest(newEmailId) //  textRequest is dialouge flow method
+       // .then(res => {
+        //  const speech = res.result.fulfillment.speech;
+        //  const botMessage = new Message(speech, 'bot',"");
+        //  this.addMessageToChatWindow(botMessage);
+        //});
+          return;
+      },
+      (err) => console.log(err)
+    );
 }
   verfiyEmailExisitOrNot(username, emailAddress) {
        this.noderestclient.get('http://localhost:3000/chat?username='+ username + '&emailAddress=' +emailAddress)
@@ -171,13 +297,61 @@ export class ChatService {
           if (null != this.chatId) {
             const userMessage = new Message("This email id already exist. Do you want to see your previous chat history.", 'bot',"");
             return this.addMessageToChatWindow(userMessage);
+          }else if(this.firstTimechating){
+            return this.createchat(username,emailAddress);
           } else {
-              return this.createchat(username,emailAddress);
+            this.noderestclient.get('http://localhost:3000/chat/emails?username='+ username )
+            .subscribe(
+              (resp) =>{
+                let result = JSON.stringify(resp)
+                let body = JSON.parse(result)._body; 
+                let parsedBody = JSON.parse(body)
+                if(parsedBody.length > 0 ){
+                  var emailIdList = parsedBody || null;
+                  this.emailIdList = [] ;
+                  var userMessage = new Message("This email id you entered does not exist.But we found below matching emails with your name.", 'bot',"");
+                  this.addMessageToChatWindow(userMessage);
+                  for(var i = 0 ; i < emailIdList.length; i++){
+                    this.emailIdList.push(emailIdList[i].email_id);
+                    const userMessage = new Message(emailIdList[i].email_id, 'bot',"");
+                    this.addMessageToChatWindow(userMessage);
+                  }
+                    userMessage = new Message("Is you email id present in the above list?", 'bot',"");
+                    return this.addMessageToChatWindow(userMessage);     
+                }
+               // else{
+                //    return this.createchat(username,emailAddress);
+                //}
+              }
+            )
           }
         },
         (err) => console.log(err)
       )
   }
+
+  createchat_noCondition(username,emailAddress){
+    var params = {
+      username : username,
+      email : emailAddress
+    }
+    this.noderestclient.post('http://localhost:3000/chat/', params)
+      .subscribe(
+        (resp) => {
+          console.log(resp);
+          this.chatId = JSON.parse(JSON.stringify(resp))._body;
+           //return this.client.textRequest(emailAddress) //  textRequest is dialouge flow method
+         // .then(res => {
+         //   const speech = res.result.fulfillment.speech;
+         //   const botMessage = new Message(speech, 'bot',"");
+         //   this.addMessageToChatWindow(botMessage);
+         // });
+    
+        },
+        (err) => console.log(err)
+      );
+  }
+
 
   createchat(username,emailAddress){
     var params = {
@@ -235,7 +409,21 @@ export class ChatService {
     if(msg.sentBy == 'bot' && msg.content == 'This email id already exist. Do you want to see your previous chat history.'){
         this.emailAddressAlreadyExistCount = 1;
     }
-    
+    if(msg.sentBy == 'bot' && msg.content == 'Is you email id present in the above list?'){
+      this.emailAddressExistInList = 1;
+    }
+    if(msg.sentBy == 'bot'&& msg.content == 'Please enter email id from list.'){
+        this.askUserToEnterEmailIdFromList = 1;
+    }
+    if(msg.sentBy == 'bot' && msg.content == "Do you want to update "+this.newEmailId+ " by new emailid "+this.emailAddress){
+        this.updateEmailIdCount = 1;
+    }
+    if(msg.sentBy == 'bot' && msg.content == "Do you want to register new entered email id?"){
+        this.registerdEmailIdCount = 1;
+    }
+    if(msg.sentBy == 'bot' && msg.content.includes("Is this the first time you are chatting with me")){
+        this.isThisFirstTimeChating = 1;
+    }
   }
   
   getChatHistory(){
